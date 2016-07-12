@@ -215,4 +215,31 @@ angular.module('conFusion.controllers', [])
   .controller('AboutController', ['$scope', '$stateParams', 'corporateFactory', 'baseURL', function ($scope, $stateParams, corporateFactory, baseURL) {
     $scope.baseURL = baseURL;
     $scope.leadership = corporateFactory.query();
-  }]);
+  }])
+  .controller('FavoritesController', ['$scope', 'menuFactory', 'favoriteFactory', 'baseURL', '$ionicListDelegate', function ($scope, menuFactory, favoriteFactory, baseURL, $ionicListDelegate) {
+
+    $scope.baseURL = baseURL;
+    $scope.shouldShowDelete = false;
+
+    $scope.favorites = favoriteFactory.getFavorites();
+
+    $scope.dishes = menuFactory.getDishes().query(
+      function (response) {
+        $scope.dishes = response;
+      },
+      function (response) {
+        $scope.message = "Error: " + response.status + " " + response.statusText;
+      });
+    console.log($scope.dishes, $scope.favorites);
+
+    $scope.toggleDelete = function () {
+      $scope.shouldShowDelete = !$scope.shouldShowDelete;
+      console.log($scope.shouldShowDelete);
+    };
+
+    $scope.deleteFavorite = function (index) {
+
+      favoriteFactory.deleteFromFavorites(index);
+      $scope.shouldShowDelete = false;
+
+    }}]);
