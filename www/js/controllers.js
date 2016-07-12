@@ -70,7 +70,7 @@ angular.module('conFusion.controllers', [])
       }, 1000);
     };
   })
-  .controller('MenuController', ['$scope', 'menuFactory', 'baseURL', function ($scope, menuFactory, baseURL) {
+  .controller('MenuController', ['$scope', 'menuFactory', 'favoriteFactory', 'baseURL', '$ionicListDelegate', function ($scope, menuFactory, favoriteFactory, baseURL, $ionicListDelegate) {
     $scope.baseURL = baseURL;
     $scope.tab = 1;
     $scope.filtText = "";
@@ -108,6 +108,12 @@ angular.module('conFusion.controllers', [])
     $scope.toggleDetails = function() {
       $scope.showDetails = !$scope.showDetails;
     };
+
+    $scope.addFavorite = function (index) {
+      console.log("index is " + index);
+      favoriteFactory.addToFavorites(index);
+      $ionicListDelegate.closeOptionButtons();
+    }
   }])
   .controller('ContactController', ['$scope', function ($scope) {
     $scope.feedback = {
