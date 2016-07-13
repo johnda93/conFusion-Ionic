@@ -159,11 +159,12 @@ angular.module('conFusion.controllers', [])
       }
     };
   }])
-  .controller('DishDetailController', ['$scope', '$stateParams', '$ionicPopover', 'menuFactory', 'favoriteFactory','baseURL', function ($scope, $stateParams, $ionicPopover, menuFactory, favoriteFactory, baseURL) {
+  .controller('DishDetailController', ['$scope', '$stateParams', '$ionicPopover', '$ionicModal', 'menuFactory', 'favoriteFactory','baseURL', function ($scope, $stateParams, $ionicPopover, $ionicModal, menuFactory, favoriteFactory, baseURL) {
     $scope.baseURL = baseURL;
     $scope.order = "";
     $scope.showDish = true;
     $scope.message = "Loading ...";
+    $scope.comment = {};
 
     $ionicPopover.fromTemplateUrl('templates/dish-detail-popover.html', {
       scope: $scope
@@ -171,8 +172,10 @@ angular.module('conFusion.controllers', [])
       $scope.popover = popover;
     });
 
-    $scope.$on('$destroy', function() {
-      $scope.popover.remove();
+    $ionicModal.fromTemplateUrl('templates/dish-comment.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.comment_form = modal;
     });
 
     $scope.dish = menuFactory.getDishes().get({id: parseInt($stateParams.id)}).$promise.then(
@@ -192,6 +195,23 @@ angular.module('conFusion.controllers', [])
     $scope.addFavorite = function (index) {
       favoriteFactory.addToFavorites(index);
       $scope.popover.hide();
+    };
+
+    $scope.showCommentForm = function () {
+      $scope.comment_form.show();
+    };
+
+    $scope.submitComment = function () {
+      $scope.comment.date = new Date().toISOString();
+
+      $scope.dish.comments.push($scope.comment);
+
+      menuFactory.getDishes().update({id: $scope.dish.id}, $scope.dish);
+
+      $scope.comment = {};
+
+      $scope.comment_form.hide();
+      $scope.popover.hide();
     }
   }])
   .controller('DishCommentController', ['$scope', 'menuFactory', function ($scope, menuFactory) {
@@ -205,8 +225,6 @@ angular.module('conFusion.controllers', [])
       $scope.dish.comments.push($scope.comment);
 
       menuFactory.getDishes().update({id: $scope.dish.id}, $scope.dish);
-
-      $scope.comment_form.$setPristine();
 
       $scope.comment = {
         rating: 5
