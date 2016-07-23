@@ -232,9 +232,9 @@ angular.module('conFusion.controllers', [])
     $scope.promotion = promotion;
     $scope.leader = leader;
   }])
-  .controller('AboutController', ['$scope', '$stateParams', 'corporateFactory', 'baseURL', function ($scope, $stateParams, corporateFactory, baseURL) {
+  .controller('AboutController', ['$scope', '$stateParams', 'leadership', 'baseURL', function ($scope, $stateParams, leadership, baseURL) {
     $scope.baseURL = baseURL;
-    $scope.leadership = corporateFactory.query();
+    $scope.leadership = leadership;
   }])
   .controller('FavoritesController', ['$scope', 'dishes', 'favorites', 'favoriteFactory', 'baseURL', '$ionicListDelegate', '$ionicPopup', '$ionicLoading', '$timeout', function ($scope, dishes, favorites, favoriteFactory, baseURL, $ionicListDelegate, $ionicPopup, $ionicLoading, $timeout) {
     $scope.baseURL = baseURL;
