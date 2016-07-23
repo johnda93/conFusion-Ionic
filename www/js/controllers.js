@@ -78,7 +78,7 @@ angular.module('conFusion.controllers', [])
     $scope.showMenu = true;
     $scope.message = "Loading ...";
 
-    $scope.dishes = menuFactory.getDishes().query(
+    $scope.dishes = menuFactory.query(
       function (response) {
         $scope.dishes = response;
         $scope.showMenu = true;
@@ -178,7 +178,7 @@ angular.module('conFusion.controllers', [])
       $scope.comment_form = modal;
     });
 
-    $scope.dish = menuFactory.getDishes().get({id: parseInt($stateParams.id)}).$promise.then(
+    $scope.dish = menuFactory.get({id: parseInt($stateParams.id)}).$promise.then(
       function (response){
         $scope.dish = response;
         $scope.showDish = true;
@@ -206,7 +206,7 @@ angular.module('conFusion.controllers', [])
 
       $scope.dish.comments.push($scope.comment);
 
-      menuFactory.getDishes().update({id: $scope.dish.id}, $scope.dish);
+      menuFactory.update({id: $scope.dish.id}, $scope.dish);
 
       $scope.comment = {};
 
@@ -224,19 +224,19 @@ angular.module('conFusion.controllers', [])
 
       $scope.dish.comments.push($scope.comment);
 
-      menuFactory.getDishes().update({id: $scope.dish.id}, $scope.dish);
+      menuFactory.update({id: $scope.dish.id}, $scope.dish);
 
       $scope.comment = {
         rating: 5
       };
     }
   }])
-  .controller('IndexController', ['$scope', '$stateParams', 'menuFactory', 'corporateFactory', 'baseURL', function ($scope, $stateParams, menuFactory, corporateFactory, baseURL) {
+  .controller('IndexController', ['$scope', '$stateParams', 'menuFactory', 'promotionFactory', 'corporateFactory', 'baseURL', function ($scope, $stateParams, menuFactory, promotionFactory, corporateFactory, baseURL) {
     $scope.baseURL = baseURL;
     $scope.showDish = true;
     $scope.message = "Loading ...";
 
-    $scope.dish = menuFactory.getDishes().get({id: 0}).$promise.then(
+    $scope.dish = menuFactory.get({id: 0}).$promise.then(
       function (response){
         $scope.dish = response;
         $scope.showDish = true;
@@ -246,7 +246,7 @@ angular.module('conFusion.controllers', [])
       }
     );
 
-    $scope.promotion = menuFactory.getPromotion().get({id:0});
+    $scope.promotion = promotionFactory.get({id: 0});
     $scope.leader = corporateFactory.get({id: 3});
   }])
   .controller('AboutController', ['$scope', '$stateParams', 'corporateFactory', 'baseURL', function ($scope, $stateParams, corporateFactory, baseURL) {
@@ -263,7 +263,7 @@ angular.module('conFusion.controllers', [])
 
     $scope.favorites = favoriteFactory.getFavorites();
 
-    $scope.dishes = menuFactory.getDishes().query(
+    $scope.dishes = menuFactory.query(
       function (response) {
         $scope.dishes = response;
         $timeout(function () {
