@@ -232,13 +232,7 @@ angular.module('conFusion.controllers', [])
   .controller('FavoritesController', ['$scope', 'dishes', 'favorites', 'favoriteFactory', 'baseURL', '$ionicListDelegate', '$ionicPopup', '$ionicLoading', '$timeout', function ($scope, dishes, favorites, favoriteFactory, baseURL, $ionicListDelegate, $ionicPopup, $ionicLoading, $timeout) {
     $scope.baseURL = baseURL;
     $scope.shouldShowDelete = false;
-
-    $ionicLoading.show({
-      template: '<ion-spinner></ion-spinner> Loading...'
-    });
-
     $scope.favorites = favorites;
-
     $scope.dishes = dishes;
 
     $scope.toggleDelete = function () {
