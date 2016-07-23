@@ -224,23 +224,13 @@ angular.module('conFusion.controllers', [])
       };
     }
   }])
-  .controller('IndexController', ['$scope', '$stateParams', 'menuFactory', 'promotionFactory', 'corporateFactory', 'baseURL', function ($scope, $stateParams, menuFactory, promotionFactory, corporateFactory, baseURL) {
+  .controller('IndexController', ['$scope', '$stateParams', 'dish', 'promotion', 'leader', 'baseURL', function ($scope, $stateParams, dish, promotion, leader, baseURL) {
     $scope.baseURL = baseURL;
     $scope.showDish = true;
     $scope.message = "Loading ...";
-
-    $scope.dish = menuFactory.get({id: 0}).$promise.then(
-      function (response){
-        $scope.dish = response;
-        $scope.showDish = true;
-      },
-      function (response) {
-        $scope.message = "Error: " + response.status + " " + response.statusText;
-      }
-    );
-
-    $scope.promotion = promotionFactory.get({id: 0});
-    $scope.leader = corporateFactory.get({id: 3});
+    $scope.dish = dish;
+    $scope.promotion = promotion;
+    $scope.leader = leader;
   }])
   .controller('AboutController', ['$scope', '$stateParams', 'corporateFactory', 'baseURL', function ($scope, $stateParams, corporateFactory, baseURL) {
     $scope.baseURL = baseURL;
