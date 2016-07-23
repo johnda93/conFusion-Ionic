@@ -159,7 +159,7 @@ angular.module('conFusion.controllers', [])
       }
     };
   }])
-  .controller('DishDetailController', ['$scope', '$stateParams', '$ionicPopover', '$ionicModal', 'menuFactory', 'favoriteFactory','baseURL', function ($scope, $stateParams, $ionicPopover, $ionicModal, menuFactory, favoriteFactory, baseURL) {
+  .controller('DishDetailController', ['$scope', '$stateParams', '$ionicPopover', '$ionicModal', 'dish', 'menuFactory', 'favoriteFactory', 'baseURL', function ($scope, $stateParams, $ionicPopover, $ionicModal, dish, menuFactory, favoriteFactory, baseURL) {
     $scope.baseURL = baseURL;
     $scope.order = "";
     $scope.showDish = true;
@@ -178,15 +178,7 @@ angular.module('conFusion.controllers', [])
       $scope.comment_form = modal;
     });
 
-    $scope.dish = menuFactory.get({id: parseInt($stateParams.id)}).$promise.then(
-      function (response){
-        $scope.dish = response;
-        $scope.showDish = true;
-      },
-      function (response) {
-        $scope.message = "Error: " + response.status + " " + response.statusText;
-      }
-    );
+    $scope.dish = dish;
 
     $scope.showMenu = function ($event) {
       $scope.popover.show($event);
@@ -253,7 +245,7 @@ angular.module('conFusion.controllers', [])
     $scope.baseURL = baseURL;
     $scope.leadership = corporateFactory.query();
   }])
-  .controller('FavoritesController', ['$scope', 'menuFactory', 'favoriteFactory', 'baseURL', '$ionicListDelegate', '$ionicPopup', '$ionicLoading', '$timeout', function ($scope, menuFactory, favoriteFactory, baseURL, $ionicListDelegate, $ionicPopup, $ionicLoading, $timeout) {
+  .controller('FavoritesController', ['$scope', 'dishes', 'favorites', 'favoriteFactory', 'baseURL', '$ionicListDelegate', '$ionicPopup', '$ionicLoading', '$timeout', function ($scope, dishes, favorites, favoriteFactory, baseURL, $ionicListDelegate, $ionicPopup, $ionicLoading, $timeout) {
     $scope.baseURL = baseURL;
     $scope.shouldShowDelete = false;
 
@@ -261,21 +253,9 @@ angular.module('conFusion.controllers', [])
       template: '<ion-spinner></ion-spinner> Loading...'
     });
 
-    $scope.favorites = favoriteFactory.getFavorites();
+    $scope.favorites = favorites;
 
-    $scope.dishes = menuFactory.query(
-      function (response) {
-        $scope.dishes = response;
-        $timeout(function () {
-          $ionicLoading.hide();
-        }, 1000);
-      },
-      function (response) {
-        $scope.message = "Error: " + response.status + " " + response.statusText;
-        $timeout(function () {
-          $ionicLoading.hide();
-        }, 1000);
-      });
+    $scope.dishes = dishes;
 
     $scope.toggleDelete = function () {
       $scope.shouldShowDelete = !$scope.shouldShowDelete;
